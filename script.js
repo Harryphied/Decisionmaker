@@ -152,12 +152,20 @@ class DecisionMaker {
 
     // Firebase Authentication Methods
     initializeAuth() {
+        console.log('Initializing Firebase auth...');
+        console.log('Auth object available:', !!window.auth);
+        console.log('Google provider available:', !!window.googleProvider);
+        
         // Listen for auth state changes
         if (window.onAuthStateChanged && window.auth) {
             window.onAuthStateChanged(window.auth, (user) => {
+                console.log('Auth state changed:', user);
                 this.currentUser = user;
                 this.updateAuthUI();
             });
+        } else {
+            console.error('Firebase auth not properly initialized');
+            this.showMessage('Firebase authentication not properly configured', 'error');
         }
     }
 
@@ -218,10 +226,18 @@ class DecisionMaker {
     async handleGoogleSignIn(e) {
         e.preventDefault();
         try {
-            await window.signInWithPopup(window.auth, window.googleProvider);
+            console.log('Attempting Google sign-in...');
+            console.log('Auth object:', window.auth);
+            console.log('Google provider:', window.googleProvider);
+            
+            const result = await window.signInWithPopup(window.auth, window.googleProvider);
+            console.log('Google sign-in successful:', result);
             this.showMessage('Successfully signed in with Google!', 'info');
         } catch (error) {
-            this.showMessage(this.getErrorMessage(error.code), 'error');
+            console.error('Google sign-in error:', error);
+            console.error('Error code:', error.code);
+            console.error('Error message:', error.message);
+            this.showMessage(`Google sign-in failed: ${error.message}`, 'error');
         }
     }
 
