@@ -1,8 +1,10 @@
 class DecisionMaker {
     constructor() {
         this.options = [];
+        this.currentUser = null;
         this.initializeElements();
         this.attachEventListeners();
+        this.initializeAuth();
     }
 
     initializeElements() {
@@ -12,6 +14,17 @@ class DecisionMaker {
         this.optionsContainer = document.getElementById('options-container');
         this.makeDecisionBtn = document.getElementById('make-decision-btn');
         this.decisionResult = document.getElementById('decision-result');
+        
+        // Auth elements
+        this.authForm = document.getElementById('auth-form');
+        this.userInfo = document.getElementById('user-info');
+        this.userEmail = document.getElementById('user-email');
+        this.emailInput = document.getElementById('email');
+        this.passwordInput = document.getElementById('password');
+        this.signinBtn = document.getElementById('signin-btn');
+        this.signupBtn = document.getElementById('signup-btn');
+        this.googleSigninBtn = document.getElementById('google-signin-btn');
+        this.signoutBtn = document.getElementById('signout-btn');
     }
 
     attachEventListeners() {
@@ -30,6 +43,12 @@ class DecisionMaker {
 
         // Update decision button state when options change
         this.updateDecisionButtonState();
+        
+        // Auth event listeners
+        this.signinBtn.addEventListener('click', (e) => this.handleSignIn(e));
+        this.signupBtn.addEventListener('click', (e) => this.handleSignUp(e));
+        this.googleSigninBtn.addEventListener('click', (e) => this.handleGoogleSignIn(e));
+        this.signoutBtn.addEventListener('click', (e) => this.handleSignOut(e));
     }
 
     addOption() {
@@ -129,6 +148,110 @@ class DecisionMaker {
         setTimeout(() => {
             messageElement.remove();
         }, 3000);
+    }
+
+    // Firebase Authentication Methods
+    initializeAuth() {
+        // Listen for auth state changes
+        if (window.onAuthStateChanged && window.auth) {
+            window.onAuthStateChanged(window.auth, (user) => {
+                this.currentUser = user;
+                this.updateAuthUI();
+            });
+        }
+    }
+
+    updateAuthUI() {
+        if (this.currentUser) {
+            // User is signed in
+            this.authForm.style.display = 'none';
+            this.userInfo.style.display = 'block';
+            this.userEmail.textContent = this.currentUser.email;
+        } else {
+            // User is signed out
+            this.authForm.style.display = 'block';
+            this.userInfo.style.display = 'none';
+        }
+    }
+
+    async handleSignIn(e) {
+        e.preventDefault();
+        const email = this.emailInput.value;
+        const password = this.passwordInput.value;
+
+        if (!email || !password) {
+            this.showMessage('Please enter both email and password', 'error');
+            return;
+        }
+
+        try {
+            await window.signInWithEmailAndPassword(window.auth, email, password);
+            this.showMessage('Successfully signed in!', 'info');
+        } catch (error) {
+            this.showMessage(this.getErrorMessage(error.code), 'error');
+        }
+    }
+
+    async handleSignUp(e) {
+        e.preventDefault();
+        const email = this.emailInput.value;
+        const password = this.passwordInput.value;
+
+        if (!email || !password) {
+            this.showMessage('Please enter both email and password', 'error');
+            return;
+        }
+
+        if (password.length < 6) {
+            this.showMessage('Password must be at least 6 characters', 'error');
+            return;
+        }
+
+        try {
+            await window.createUserWithEmailAndPassword(window.auth, email, password);
+            this.showMessage('Account created successfully!', 'info');
+        } catch (error) {
+            this.showMessage(this.getErrorMessage(error.code), 'error');
+        }
+    }
+
+    async handleGoogleSignIn(e) {
+        e.preventDefault();
+        try {
+            await window.signInWithPopup(window.auth, window.googleProvider);
+            this.showMessage('Successfully signed in with Google!', 'info');
+        } catch (error) {
+            this.showMessage(this.getErrorMessage(error.code), 'error');
+        }
+    }
+
+    async handleSignOut(e) {
+        e.preventDefault();
+        try {
+            await window.signOut(window.auth);
+            this.showMessage('Successfully signed out!', 'info');
+        } catch (error) {
+            this.showMessage('Error signing out', 'error');
+        }
+    }
+
+    getErrorMessage(errorCode) {
+        switch (errorCode) {
+            case 'auth/user-not-found':
+                return 'No account found with this email';
+            case 'auth/wrong-password':
+                return 'Incorrect password';
+            case 'auth/email-already-in-use':
+                return 'An account with this email already exists';
+            case 'auth/weak-password':
+                return 'Password is too weak';
+            case 'auth/invalid-email':
+                return 'Invalid email address';
+            case 'auth/too-many-requests':
+                return 'Too many failed attempts. Please try again later';
+            default:
+                return 'Authentication error. Please try again';
+        }
     }
 }
 
