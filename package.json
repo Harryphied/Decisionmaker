@@ -4,7 +4,7 @@
   "description": "A modern, clean web application that helps you make decisions by randomly selecting from your provided options.",
   "main": "index.html",
   "scripts": {
-    "start": "npx serve .",
+    "start": "npx serve . -s",
     "dev": "npx live-server .",
     "build": "echo 'No build process needed for this static site'",
     "test": "echo 'No tests specified'"

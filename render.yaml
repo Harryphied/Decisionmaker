@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: quick-decision-maker
+    env: static
+    buildCommand: echo "No build needed for static site"
+    startCommand: npx serve . -s -l 10000
+    envVars:
+      - key: NODE_ENV
+        value: production
