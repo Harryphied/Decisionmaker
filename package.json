@@ -1,0 +1,37 @@
+{
+  "name": "quick-decision-maker",
+  "version": "1.0.0",
+  "description": "A modern, clean web application that helps you make decisions by randomly selecting from your provided options.",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve .",
+    "dev": "npx live-server .",
+    "build": "echo 'No build process needed for this static site'",
+    "test": "echo 'No tests specified'"
+  },
+  "keywords": [
+    "decision",
+    "maker",
+    "random",
+    "choice",
+    "web",
+    "app",
+    "html",
+    "css",
+    "javascript"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Harryphied/Decisionmaker.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Harryphied/Decisionmaker/issues"
+  },
+  "homepage": "https://github.com/Harryphied/Decisionmaker#readme",
+  "devDependencies": {
+    "live-server": "^1.2.2",
+    "serve": "^14.2.1"
+  }
+}

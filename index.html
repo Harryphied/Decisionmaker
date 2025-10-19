@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quick Decision Maker</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="app-title">Quick Decision Maker</h1>
+            <p class="app-subtitle">Make decisions with confidence</p>
+        </header>
+
+        <main class="main-content">
+            <div class="question-section">
+                <label for="question-input" class="question-label">What would you like to decide?</label>
+                <input 
+                    type="text" 
+                    id="question-input" 
+                    class="question-input" 
+                    placeholder="e.g., What should I have for dinner?"
+                >
+            </div>
+
+            <div class="options-section">
+                <h2 class="options-title">Decision Options</h2>
+                <div class="options-container" id="options-container">
+                    <div class="add-option">
+                        <input 
+                            type="text" 
+                            id="option-input" 
+                            class="option-input" 
+                            placeholder="Add an option..."
+                        >
+                        <button id="add-option-btn" class="add-option-btn">+</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="decision-section">
+                <button id="make-decision-btn" class="make-decision-btn" disabled>
+                    Make My Decision
+                </button>
+                <div id="decision-result" class="decision-result"></div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
