@@ -87,3 +87,5 @@ Once authentication is working, you can:
 - Implement user-specific decision history
 - Add more authentication providers
 - Deploy to Firebase Hosting
+
+

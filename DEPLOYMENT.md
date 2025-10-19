@@ -148,3 +148,5 @@ After successful deployment:
 5. **Share your app** with others!
 
 Your Quick Decision Maker app will be live and ready to help people make decisions! 🎉
+
+
